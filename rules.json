@@ -1,0 +1,87 @@
+{
+  "severity_order": {
+    "—": 0,
+    "P3": 1,
+    "P2": 2,
+    "P1": 3
+  },
+  "rules": [
+    {
+      "id": "SLA_BREACH",
+      "severity": "P1",
+      "action": "Зафиксировать новое ETA, уведомить точку, эскалация логистике",
+      "when": {
+        "all": [
+          { "field": "type", "op": "eq", "value": "delivery" },
+          { "field": "crm.deadline", "op": "lte_field", "value": "now" },
+          { "field": "crm.status", "op": "ne", "value": "Принято" }
+        ]
+      }
+    },
+    {
+      "id": "NO_MANAGER_CONFIRM",
+      "severity": "P1",
+      "action": "Запросить подтверждение у руководителя, не у сотрудника",
+      "when": {
+        "all": [
+          { "field": "crm.requires_manager_confirmation", "op": "truthy" },
+          { "field": "crm.manager_confirmation", "op": "falsy" }
+        ]
+      }
+    },
+    {
+      "id": "DOCS_EXPECTED",
+      "severity": "P2",
+      "action": "Проверить документы у руководителя и загрузить в CRM",
+      "when": {
+        "all": [
+          { "field": "type", "op": "eq", "value": "onboarding" },
+          { "field": "crm.docs", "op": "eq", "value": "expected" }
+        ]
+      }
+    },
+    {
+      "id": "DELAY_CONFIRMED",
+      "severity": "P2",
+      "action": "Уточнить ETA у курьера и уведомить получателя",
+      "when": {
+        "field": "claims",
+        "op": "some",
+        "where": {
+          "field": "claim_type",
+          "op": "in",
+          "value": ["delay_asserted", "eta_corrected"]
+        }
+      }
+    },
+    {
+      "id": "ALL_CONSISTENT",
+      "severity": "—",
+      "action": "Закрыть без действий",
+      "when": {
+        "all": [
+          { "field": "crm.status", "op": "eq", "value": "Принято" },
+          {
+            "not": {
+              "any": [
+                { "field": "crm.docs", "op": "eq", "value": "expected" },
+                {
+                  "all": [
+                    { "field": "crm.requires_manager_confirmation", "op": "truthy" },
+                    { "field": "crm.manager_confirmation", "op": "falsy" }
+                  ]
+                },
+                {
+                  "all": [
+                    { "field": "type", "op": "eq", "value": "delivery" },
+                    { "field": "crm.status", "op": "ne", "value": "Принято" }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

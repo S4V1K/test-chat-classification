@@ -1,0 +1,186 @@
+{
+  "now": "2026-11-23T10:00:00",
+  "cases": [
+    {
+      "id": "С-17",
+      "type": "onboarding",
+      "crm": {
+        "first_day": "2026-11-24",
+        "docs": "expected",
+        "requires_manager_confirmation": false,
+        "manager_confirmation": null,
+        "status": null
+      },
+      "chat": [
+        {
+          "id": "m1",
+          "author": "Сотрудник",
+          "author_role": "employee",
+          "ts": "2026-11-22T19:12:00",
+          "text": "Фотографии ушли ему в мессенджер вчера вечером."
+        },
+        {
+          "id": "m2",
+          "author": "SupportBot",
+          "author_role": "bot",
+          "ts": "2026-11-23T09:58:00",
+          "text": "Напоминание: заполните профиль в CRM"
+        },
+        {
+          "id": "m3",
+          "author": "Коллега",
+          "author_role": "other",
+          "ts": "2026-11-23T09:40:00",
+          "text": "Кто на кофе после планёрки?"
+        }
+      ],
+      "expected": {
+        "priority": "P2",
+        "need_action": true,
+        "rule_ids": [
+          "DOCS_EXPECTED"
+        ],
+        "claims": [
+          {
+            "message_id": "m1",
+            "claim_type": "docs_asserted",
+            "author_role": "employee",
+            "eta": null,
+            "evidence": "Фотографии ушли ему в мессенджер"
+          }
+        ]
+      }
+    },
+    {
+      "id": "С-24",
+      "type": "offboarding",
+      "crm": {
+        "last_day": "2026-11-23",
+        "requires_manager_confirmation": true,
+        "manager_confirmation": null,
+        "docs": null,
+        "status": null
+      },
+      "chat": [
+        {
+          "id": "m4",
+          "author": "Сотрудник",
+          "author_role": "employee",
+          "ts": "2026-11-23T09:30:00",
+          "text": "Руководитель в курсе, мы уже согласовали все детали."
+        },
+        {
+          "id": "m5",
+          "author": "Коллега",
+          "author_role": "other",
+          "ts": "2026-11-23T09:12:00",
+          "text": "Погода сегодня отличная"
+        }
+      ],
+      "expected": {
+        "priority": "P1",
+        "need_action": true,
+        "rule_ids": [
+          "NO_MANAGER_CONFIRM"
+        ],
+        "claims": [
+          {
+            "message_id": "m4",
+            "claim_type": "manager_confirm_asserted",
+            "author_role": "employee",
+            "eta": null,
+            "evidence": "Руководитель в курсе"
+          }
+        ]
+      }
+    },
+    {
+      "id": "П-08",
+      "type": "delivery",
+      "crm": {
+        "deadline": "2026-11-23T10:00:00",
+        "status": "В пути",
+        "requires_manager_confirmation": false,
+        "manager_confirmation": null,
+        "docs": null
+      },
+      "chat": [
+        {
+          "id": "m6",
+          "author": "Курьер",
+          "author_role": "courier",
+          "ts": "2026-11-23T09:55:00",
+          "text": "Немного застрял на трассе, буду ближе к часу дня."
+        },
+        {
+          "id": "m7",
+          "author": "Коллега",
+          "author_role": "other",
+          "ts": "2026-11-23T09:40:00",
+          "text": "Кто менял график отпусков?)"
+        },
+        {
+          "id": "m8",
+          "author": "SupportBot",
+          "author_role": "bot",
+          "ts": "2026-11-23T09:58:00",
+          "text": "Системная проверка завершена"
+        }
+      ],
+      "expected": {
+        "priority": "P1",
+        "need_action": true,
+        "rule_ids": [
+          "SLA_BREACH",
+          "DELAY_CONFIRMED"
+        ],
+        "claims": [
+          {
+            "message_id": "m6",
+            "claim_type": "delay_asserted",
+            "author_role": "courier",
+            "eta": null,
+            "evidence": "буду ближе к часу дня"
+          }
+        ]
+      }
+    },
+    {
+      "id": "П-09",
+      "type": "delivery",
+      "crm": {
+        "deadline": "2026-11-23T10:00:00",
+        "status": "Принято",
+        "accepted_at": "2026-11-23T09:20:00",
+        "requires_manager_confirmation": false,
+        "manager_confirmation": null,
+        "docs": null
+      },
+      "chat": [
+        {
+          "id": "m9",
+          "author": "Получатель",
+          "author_role": "recipient",
+          "ts": "2026-11-23T09:25:00",
+          "text": "Приняли, посчитали, всё сходится."
+        }
+      ],
+      "expected": {
+        "priority": "—",
+        "need_action": false,
+        "rule_ids": [
+          "ALL_CONSISTENT"
+        ],
+        "claims": [
+          {
+            "message_id": "m9",
+            "claim_type": "receipt_asserted",
+            "author_role": "recipient",
+            "eta": null,
+            "evidence": "Приняли, посчитали"
+          }
+        ]
+      }
+    }
+  ]
+}

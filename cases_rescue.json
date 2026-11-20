@@ -1,0 +1,54 @@
+{
+  "now": "2026-11-23T10:00:00",
+  "cases": [
+    {
+      "id": "П-08-rescue",
+      "type": "delivery",
+      "crm": {
+        "deadline": "2026-11-23T10:00:00",
+        "status": "В пути",
+        "requires_manager_confirmation": false,
+        "manager_confirmation": null,
+        "docs": null
+      },
+      "chat": [
+        {
+          "id": "m6",
+          "author": "Курьер",
+          "author_role": "courier",
+          "ts": "2026-11-23T09:55:00",
+          "text": "Я опаздываю, приеду в 13:00."
+        },
+        {
+          "id": "m7",
+          "author": "Коллега",
+          "author_role": "other",
+          "ts": "2026-11-23T09:40:00",
+          "text": "Кто менял график отпусков?)"
+        },
+        {
+          "id": "m10",
+          "author": "Курьер",
+          "author_role": "courier",
+          "ts": "2026-11-23T09:56:00",
+          "text": "Нет, я изменил решение — прибуду по графику."
+        }
+      ],
+      "expected": {
+        "priority": "P1",
+        "need_action": true,
+        "rule_ids": ["SLA_BREACH"],
+        "claims": [
+          {
+            "message_id": "m10",
+            "claim_type": "delay_canceled",
+            "author_role": "courier",
+            "eta": null,
+            "evidence": "прибуду по графику",
+            "supersedes": "m6"
+          }
+        ]
+      }
+    }
+  ]
+}
